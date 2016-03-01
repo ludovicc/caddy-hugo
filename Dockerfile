@@ -1,6 +1,6 @@
 FROM abiosoft/caddy
 
-RUN apk add go mercurial && mkdir /home/go
+RUN apk add go>=1.6 --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted && apk add mercurial && mkdir /home/go
 ENV GOPATH /home/go
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/go/bin/
 RUN /usr/bin/go get -u github.com/jteeuwen/go-bindata/...
