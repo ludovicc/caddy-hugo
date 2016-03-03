@@ -10,7 +10,9 @@ RUN /usr/bin/go get -u github.com/xenolf/lego
 RUN /usr/bin/go get github.com/hacdias/caddy-hugo || true
 RUN cd /home/go/src/github.com/hacdias/caddy-hugo && /usr/bin/go generate
 
+VOLUME /srv
+
 COPY caddy-hugo.sh /caddy-hugo.sh
 RUN chmod +x /caddy-hugo.sh
 ENTRYPOINT ["/bin/sh", "-c", "/caddy-hugo.sh"]
-CMD ["--conf", "/etc/Caddyfile"]
+CMD ["-conf", "/srv/Caddyfile"]
