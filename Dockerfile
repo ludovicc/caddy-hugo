@@ -1,16 +1,20 @@
-FROM abiosoft/caddy
+FROM alpine:3.3
+MAINTAINER Ludovic Claude <ludovic.claude@laposte.net>
 
-RUN apk add go>=1.6 --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community --allow-untrusted && apk add mercurial && mkdir /home/go
-ENV GOPATH /home/go
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/go/bin/
-RUN /usr/bin/go get -u github.com/jteeuwen/go-bindata/...
-RUN /usr/bin/go get github.com/caddyserver/caddydev
-RUN /usr/bin/go get -u github.com/xenolf/lego
-# Skip the error about assets containing no buildable Go sources
-RUN /usr/bin/go get github.com/hacdias/caddy-hugo || true
-RUN cd /home/go/src/github.com/hacdias/caddy-hugo && /usr/bin/go generate
+LABEL caddy_version="0.8.2" architecture="amd64"
 
+RUN apk add --update openssh-client git tar
+
+RUN curl --silent --show-error --fail --location \
+      --header "Accept: application/tar+gzip, application/x-gzip, application/octet-stream" -o - \
+      "https://caddyserver.com/download/build?os=linux&arch=amd64&features=git%2Chugo%2Crealip" \
+    | tar --no-same-owner -C /usr/bin/ -xz caddy \
+ && chmod 0755 /usr/bin/caddy \
+ && /usr/bin/caddy -version
+
+EXPOSE 80 443 2015
 VOLUME /srv
+WORKDIR /srv
 
 COPY caddy-hugo.sh /caddy-hugo.sh
 RUN chmod +x /caddy-hugo.sh

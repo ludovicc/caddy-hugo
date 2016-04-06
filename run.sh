@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker run -d -v $(pwd):/srv -p 2015:2015 ludovicc/caddy-hugo
+PORT=2015
+
+docker run -d -v $(pwd):/srv -p $PORT:$PORT -e PORT=$PORT ludovicc/caddy-hugo

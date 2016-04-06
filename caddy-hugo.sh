@@ -17,5 +17,6 @@ hugo /srv {
 EOF
 
 ln -s -f -b /srv/Caddyfile /etc/Caddyfile
-cd /
-/home/go/bin/caddydev --source /home/go/src/github.com/hacdias/caddy-hugo hugo -port $PORT $@
+cd /srv
+echo "$@"
+/usr/bin/caddy -port $PORT $@
