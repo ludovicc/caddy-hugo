@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$PORT" ]; then
+    echo "Warning: missing PORT environment variable. Assuming PORT=2015"
+    PORT=2015
+fi
+
 # Generate a basic Caddyfile for Caddy-hugo
 [ -f /srv/Caddyfile ] || cat <<EOF > /srv/Caddyfile
 # disable HTTPS to run the server on localhost
@@ -18,5 +23,4 @@ EOF
 
 ln -s -f -b /srv/Caddyfile /etc/Caddyfile
 cd /srv
-echo "$@"
 /usr/bin/caddy -port $PORT $@
